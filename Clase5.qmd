@@ -1,0 +1,45 @@
+---
+title: "Clase5"
+author: "Sofia Maldonado García"
+format: html
+editor: visual
+---
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(broom)
+library(ggpubr)
+```
+
+```{r}
+summary(income.data) 
+```
+
+```{r}
+hist(income.data$happiness)
+```
+
+```{r}
+plot(happiness ~ income, data = income.data)
+```
+
+```{r}
+income.happiness.lm <- lm(happiness ~ income, data = income.data)
+```
+
+```{r}
+summary(income.happiness.lm)
+```
+
+```{r}
+par(mfrow=c(2,2))
+plot(income.happiness.lm)
+par(mfrow=c(1,1))
+```
+
+```{r}
+income.graph <- ggplot(income.data, aes(x=income, y=happiness))+
+                     geom_point()
+income.graph
+```
