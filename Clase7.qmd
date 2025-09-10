@@ -1,0 +1,51 @@
+---
+title: "Clase7"
+author: "Sofía Maldonado García"
+format: html
+editor: visual
+---
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(broom)
+library(ggpubr)
+```
+
+```{r}
+temp.data <- data.frame(
+  squeaks = c(882,1188,1104,864,1200,1032,960,900),
+  temperature = c(69.7,93.3,84.3,76.3,88.6,82.6,71.6,79.6)
+)
+
+temp.data
+```
+
+```{r}
+plot(temp.data$temperature, temp.data$squeaks)
+## create a "linear model" - that is, do the regression
+temp.regression <- lm(squeaks ~ temperature, data=temp.data)
+## add the regression line to our x/y scatter plot
+abline(temp.regression, col="blue")
+
+```
+
+```{r}
+summary(temp.regression)
+```
+
+```{r}
+temp.graph <-ggplot(temp.data, aes(x=temperature, y=squeaks))+
+                     geom_point()
+temp.graph
+```
+
+```{r}
+par(mfrow=c(2,2))
+plot(temp.regression)
+par(mfrow=c(1,1))
+```
+
+```{r}
+temp.regression
+```
