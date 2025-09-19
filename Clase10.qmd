@@ -1,0 +1,86 @@
+---
+title: "Clase10"
+author: "Sofía Maldonado García"
+format: html
+editor: visual
+---
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(broom)
+library(ggpubr)
+```
+
+```{r}
+summary(heart.data)
+```
+
+```{r}
+cor(heart.data$biking, heart.data$smoking)
+```
+
+```{r}
+plot(heart.disease ~ biking, data = heart.data)
+```
+
+```{r}
+heart.disease.lm<-lm(heart.disease ~ biking + smoking, data = heart.data)
+
+summary(heart.disease.lm)
+```
+
+```{r}
+par(mfrow=c(2,2))
+plot(heart.disease.lm)
+par(mfrow=c(1,1))
+```
+
+```{r}
+plotting.data<-expand.grid(
+  biking = seq(min(heart.data$biking), max(heart.data$biking), length.out=30),
+    smoking=c(min(heart.data$smoking), mean(heart.data$smoking), max(heart.data$smoking)))
+```
+
+```{r}
+plotting.data$predicted.y <- predict.lm(heart.disease.lm, newdata=plotting.data)
+
+```
+
+```{r}
+plotting.data$smoking <- round(plotting.data$smoking, digits = 2)
+
+```
+
+```{r}
+plotting.data$smoking <- as.factor(plotting.data$smoking)
+
+```
+
+```{r}
+heart.plot <- ggplot(heart.data, aes(x=biking, y=heart.disease)) +
+  geom_point()
+
+heart.plot
+```
+
+```{r}
+heart.plot <- heart.plot +
+  geom_line(data=plotting.data, aes(x=biking, y=predicted.y, color=smoking), linewidth=1.25)
+
+heart.plot
+
+```
+
+```{r}
+heart.plot <-
+heart.plot +
+  theme_bw() +
+  labs(title = "Rates of heart disease (% of population) \n as a function of biking to work and smoking",
+      x = "Biking to work (% of population)",
+      y = "Heart disease (% of population)",
+      color = "Smoking \n (% of population)")
+
+heart.plot
+
+```
