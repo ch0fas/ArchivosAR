@@ -1,0 +1,55 @@
+---
+title: "Clase11"
+author: "Sofía Maldonado García"
+format: html
+editor: visual
+---
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(broom)
+library(ggpubr)
+```
+
+```{r}
+of.data <- data.frame(
+  duration = c(240, 120, 178, 234, 235, 269, 255, 220),
+  previous = c(98, 90, 92, 98, 93, 105, 81, 108),
+  posterior = c(92, 65, 72, 94, 83, 94, 101, 87),
+  height = c(140, 110, 125, 120, 140, 120, 125, 150)
+)
+
+of.data
+```
+
+```{r}
+summary(of.data)
+```
+
+```{r}
+height.duration.lm <- lm(height ~ duration + previous + posterior,
+                         data = of.data)
+
+summary(height.duration.lm)
+```
+
+# Conclusion
+
+For each second of the eruption, its height rises 0.18 feet. For each minute of the previous interval, the height rises 0.44 feet. However, for each minute between this eruption and the next, the eruption is expected to be -0.43 feet lower.
+
+**The data doesn't come from a normally distributed population. Therefore, we can't test the hypothesis.**
+
+```{r}
+plot(height ~ duration, data = of.data)
+```
+
+```{r}
+par(mfrow=c(2,2))
+plot(height.duration.lm)
+par(mfrow=c(1,1))
+```
+
+$$
+f(y; \theta) = s(y)t(\theta)e^{\alpha(y)b(\theta)}
+$$
