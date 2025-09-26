@@ -1,0 +1,26 @@
+---
+title: "Clase12"
+author: "Sofía Maldonado García"
+format: html
+editor: visual
+---
+
+```{r}
+summary(income_data)
+```
+
+```{r}
+hist(income_data$happiness, freq = FALSE)
+```
+
+```{r}
+shapiro.test(income_data$happiness)
+```
+
+```{r}
+library("nortest")
+```
+
+```{r}
+lillie.test(income_data$happiness)
+```
