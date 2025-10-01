@@ -1,0 +1,28 @@
+---
+title: "Clase13"
+author: "Sofía Maldonado García"
+format: html
+editor: visual
+---
+
+```{r}
+library("lmtest")
+library(ggplot2)
+library(dplyr)
+library(broom)
+library(ggpubr)
+```
+
+```{r}
+heart.data <- read.csv("Datos/heart.data.csv")
+```
+
+```{r}
+heart.disease.lm<-lm(heart.disease ~ biking + smoking, data = heart.data)
+
+summary(heart.disease.lm)
+```
+
+```{r}
+bptest(heart.disease.lm)
+```

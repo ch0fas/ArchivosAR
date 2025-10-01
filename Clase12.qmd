@@ -24,3 +24,15 @@ library("nortest")
 ```{r}
 lillie.test(income_data$happiness)
 ```
+
+```{r}
+mod <- lm(income_data$happiness ~ income_data$income)
+
+ei <- income_data$happiness - fitted(mod)
+pi <- ei * sqrt(mod$weights)
+hii <- lm.influence(mod)$hat
+di <- ei * sqrt(mod$weights) / sqrt(summary(mod)$sigma^2 * (1-hii))
+ri <- ei * sqrt(mod$weights) / sqrt(lm.influence(mod)$sigma^2 * (1-hii))
+
+cbind(ei=ei, pi=pi, di=di, ri=ri)
+```
