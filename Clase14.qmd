@@ -1,0 +1,64 @@
+---
+title: "Clase14"
+author: "Sofía Maldonado García"
+format: html
+editor: visual
+---
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(broom)
+library(ggpubr)
+```
+
+```{r}
+income.data <- read.csv("Datos/income.data.csv")
+```
+
+```{r}
+res <- cbind(ei=residuals(income.happiness.lm, type='working'),
+      pi=residuals(income.happiness.lm, type='pearson'),
+      di=rstandard(income.happiness.lm),
+      ri=rstudent(mod))
+res
+```
+
+```{r}
+mean(res[0])
+```
+
+```{r}
+res2 <- cbind(ei=residuals(heart.disease.lm, type='working'),
+      pi=residuals(heart.disease.lm, type='pearson'),
+      di=rstandard(heart.disease.lm),
+      ri=rstudent(mod))
+```
+
+```{r}
+mean(res2[0])
+```
+
+```{r}
+## generate regressor
+x <- rep(c(-1, 1), 50)
+
+## generate the AR(1) error terms with parameter rho = 0 (white noise)
+err1 <- rnorm(100)
+## generate dependent variable
+y1 <- 1 + x + err1
+library(lmtest)
+mod1 <- lm(y1 ~ x)
+dwtest(mod1) ## perform Durbin-Watson test
+
+```
+
+```{r}
+## generate the AR(1) error terms with parameter rho = 0.9 respectively
+err2 <- stats::filter(x=err1, filter=0.9, method="recursive")
+## generate dependent variable
+y2 <- 1 + x + err2
+
+mod2 <- lm(y2 ~ x)
+dwtest(mod2) ## perform Durbin-Watson test
+```
