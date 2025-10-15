@@ -1,0 +1,131 @@
+---
+title: "Cheat Sheet 1"
+author: "Sofía Maldonado García"
+format: html
+editor: visual
+---
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(broom)
+library(ggpubr) # Librerías principales
+```
+
+```{r}
+heart.data <- read.csv("Datos/heart.data.csv") # Cargando CSV (ejemplo multivariado)
+```
+
+```{r}
+temp.data <- data.frame(
+  squeaks = c(882,1188,1104,864,1200,1032,960,900),
+  temperature = c(69.7,93.3,84.3,76.3,88.6,82.6,71.6,79.6)
+)
+
+temp.data # Cargando directamente (ejemplo simple)
+```
+
+```{r}
+
+income.data <- read.csv("Datos/income.data.csv")
+income.happiness.lm <- lm(happiness ~ income, data = income.data)
+```
+
+```{r}
+# LINEAR REGRESSION - SIMPLE
+
+income.happiness.lm <- lm(happiness ~ income, data=income.data) # Squeaks as a function of temperature
+
+# Summary of the Linear Regression
+
+summary(income.happiness.lm)
+```
+
+```{r}
+# LINEAR REGRESSION - Multiple
+
+heart.disease.lm<-lm(heart.disease ~ biking + smoking, data = heart.data) # Heart disease as a function of both biking and smoking
+
+# Summary of the Linear Regression
+summary(heart.disease.lm)
+```
+
+```{r}
+# Simple Linear Regression, Viz
+
+plot(income_data$happiness, income.data$income)
+
+abline(temp.regression, col="blue")
+```
+
+Esta es la recta de regresión, específicamente
+
+**Conclusiones**
+
+Hay una correlación lineal negativa alta entre ambas variables, es decir, los puntos se acercan bastante a una recta con pendiente negativa
+
+```{r}
+# Multiple Linear Regression, viz
+```
+
+# Prueba de Hipótesis
+
+## Simple
+
+$$
+H_o: \beta_1 = 0 \newline
+H_1: \beta_1 \neq 0
+$$
+
+$$
+\text{p-value} \leq \alpha \text{ rechaza } H_0
+$$
+
+## Multiple
+
+$$
+H_0: \beta_1 = \beta_2 = \dots \beta_k = 0 \newline
+H_1: \beta_1 = \beta_2 = \dots \beta_k \neq 0
+$$
+
+$$
+\text{p-value } \leq \alpha \text{ rechaza } H_0
+$$
+
+# Supuestos
+
+## Lineal Simple
+
+-   Normalidad de residuos
+
+-   Homocedasticidad de residuos
+
+-   Media de residuos = $0$
+
+```{r}
+par(mfrow=c(2,2))
+plot(income.happiness.lm)
+par(mfrow=c(1,1))
+```
+
+Gráfica 1 y 3 -\> Prueba de Homocedasticidad\
+Gráfica 2 -\> Prueba de normalidad
+
+```{r}
+shapiro.test(income_data$happiness)
+```
+
+```{r}
+lillie.test(income_data$happiness)
+```
+
+```{r}
+mean(cbind(ei=residuals(income.happiness.lm, type='working'),
+      pi=residuals(mod, type='pearson'),
+      di=rstandard(mod),
+      ri=rstudent(mod)))
+```
+
+```{r}
+bptest(income.happiness.lm)
+```
