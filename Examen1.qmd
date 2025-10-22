@@ -1,0 +1,99 @@
+---
+title: "Examen1"
+author: "Sofía Maldonado García"
+format: html
+editor: visual
+---
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(broom)
+library(ggpubr)
+```
+
+```{r}
+# Importando datos
+
+madre.hija.data <- data.frame(
+  madre = c(63, 67, 64, 60, 65, 67, 59, 60),
+  hija = c(58.6, 64.7, 65.3, 61, 65.4, 67.4, 60.9, 63.1)
+)
+
+madre.hija.data
+```
+
+```{r}
+# Generando la regresión lineal
+
+madre.hija.lm = lm(hija ~ madre, data = madre.hija.data)
+
+summary(madre.hija.lm)
+```
+
+```{r}
+# Visualizando
+plot(madre.hija.data$madre, madre.hija.data$hija)
+
+abline(madre.hija.lm, col="blue")
+```
+
+```{r}
+# Gráficas para corroborar homocedasticidad y normalidad
+par(mfrow=c(2,2)) 
+plot(madre.hija.lm)
+par(mfrow=c(1,1))
+```
+
+```{r}
+# Prueba adicional de normalidad
+shapiro.test(madre.hija.data$madre)
+```
+
+```{r}
+# Residuales
+mean(cbind(ei=residuals(madre.hija.lm, type='working'),
+      pi=residuals(madre.hija.lm, type='pearson'),
+      di=rstandard(madre.hija.lm),
+      ri=rstudent(madre.hija.lm)))
+```
+
+```{r}
+cor(madre.hija.data$hija, madre.hija.data$madre)
+```
+
+# Datos Importantes
+
+Coeficiente de Correlación Lineal -\> $0.6925$
+
+Ecuación de Regresión -\> $22.9534 + 0.6392x$
+
+Coeficiente de Determinación -\> $0.4797$
+
+p-value -\> $0.05691$
+
+Valor p de prueba Shapiro-Wilk -\> $0.2889$
+
+Media de residuales -\> $-0.0564096$
+
+# Hipótesis
+
+$$
+H_o: \beta_1 = 0 \newline
+H_1: \beta_1 \neq 0 \newline
+\text{Con } \alpha = 0.01
+$$
+
+# Conclusiones
+
+### Prueba de Hipótesis
+
+Con un nivel de significancia de 0.01, y con el p-value obtenido de 0.05961,se concluye que **no** se rechaza la hipótesis nula, es decir, que **no** existe una correlación lineal estadísticamente significativa entre la altura de una madre y la altura de su hija.
+
+### Supuestos
+
+Esto se puede corroborar observando las gráficas de arriba. La prueba Shapiro-Wilk muestra que los datos no cumplen el supuesto de normalidad. La gráfica de los Q-Q Residuals tampoco sigue una línea recta, lo cuál confirma la falta de normaliad.
+
+Hay patrones claros en las de Residuals vs Fitted y Scale-Location. Esto nos dice que los datos no cumplen con los supuestos de homocedasticidad que se esperan.
+
+El último supuesto, que la media de los residuos debería ser cero o cercano a cero, no se cumple, ya que la media de los residuos es $-0.0564096$.

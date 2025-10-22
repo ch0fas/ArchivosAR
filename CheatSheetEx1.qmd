@@ -123,9 +123,10 @@ lillie.test(income_data$happiness)
 mean(cbind(ei=residuals(income.happiness.lm, type='working'),
       pi=residuals(mod, type='pearson'),
       di=rstandard(mod),
-      ri=rstudent(mod)))
+      ri=rstudent(mod))) #Promedio de residuales prácticamente cero
 ```
 
 ```{r}
+library(lmtest)
 bptest(income.happiness.lm)
 ```

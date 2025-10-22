@@ -1,0 +1,51 @@
+---
+title: "Clase19"
+author: "Sofía Maldonado García"
+format: html
+editor: visual
+---
+
+```{r}
+tamanio_grano_mm <- c(
+  0.245, 0.247, 0.285, 0.299, 0.327, 0.347, 0.356, 0.360, 0.363,
+  0.364, 0.398, 0.400, 0.409, 0.421, 0.432, 0.473, 0.509, 0.529,
+  0.561, 0.569, 0.594, 0.638, 0.656, 0.816, 0.853, 0.938, 1.036,
+  1.045
+)
+
+aranas <- c(
+  "absent", "absent", "present", "present", "present", "present",
+  "absent", "present", "absent", "present", "absent", "present",
+  "absent", "present", "absent", "present", "present", "present",
+  "absent", "absent", "present", "present", "present", "present",
+  "present", "present", "present", "present"
+)
+
+# Crear el data frame
+datos_rls <- data.frame(
+  "Grain_size_mm" = tamanio_grano_mm,
+  "Spiders" = aranas
+)
+
+# -----------------------------------------------------------------
+# PASO DE TRANSFORMACIÓN: absent -> 0 y present -> 1
+# -----------------------------------------------------------------
+
+# Opción 1: Usando la función 'ifelse' (más clara para este mapeo)
+datos_rls$Spiders_Binary <- ifelse(datos_rls$Spiders == "present", 1, 0)
+```
+
+```{r}
+datos_rls
+```
+
+```{r}
+library(ggplot2)
+table(datos_rls$Grain_size_mm)
+
+ggplot(data = datos_rls, aes(x = Grain_size_mm, y = aranas, color = aranas)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.1) +
+  theme_bw() +
+  theme(legend.position = "null")
+```
