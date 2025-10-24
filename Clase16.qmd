@@ -58,6 +58,22 @@ summary(modelo)
 ```
 
 ```{r}
+# Ajuste de un modelo logístico.
+modelo_logistico <- glm(default ~ balance, data = datos, family = "binomial")
+
+# Representación gráfica del modelo.
+ggplot(data = datos, aes(x = balance, y = default)) +
+  geom_point(aes(color = as.factor(default)), shape = 1) + 
+  stat_function(fun = function(x){predict(modelo_logistico,
+                                          newdata = data.frame(balance = x),
+                                          type = "response")}) +
+  theme_bw() +
+  labs(title = "Regresión logística",
+       y = "Probabilidad default") +
+  theme(legend.position = "none")
+```
+
+```{r}
 confint(object = modelo, level = 0.95 )
 ```
 

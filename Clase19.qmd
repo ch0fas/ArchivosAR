@@ -49,3 +49,19 @@ ggplot(data = datos_rls, aes(x = Grain_size_mm, y = aranas, color = aranas)) +
   theme_bw() +
   theme(legend.position = "null")
 ```
+
+```{r}
+modelo <- glm(Spiders_Binary ~ tamanio_grano_mm, data = datos_rls, family = "binomial")
+summary(modelo)
+
+datos_rls$Spiders_Binary <- as.character(datos_rls$Spiders_Binary)
+datos_rls$Spiders_Binary <- as.numeric(datos_rls$Spiders_Binary)
+
+plot(Spiders_Binary ~ tamanio_grano_mm, datos_rls, col = "darkgreen",
+     main = "Modelo regresión logística",
+     ylab = "P(aranas=1|tamanio_grano_mm)",
+     xlab = "tamanio_grano_mm", pch = "I")
+
+curve(predict(modelo, data.frame(tamanio_grano_mm = x), type = "response"),
+      col = "firebrick", lwd = 2.5, add = TRUE)
+```
